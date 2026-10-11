@@ -9,6 +9,3 @@ rcm.db
 # Runtime logs
 *.log
 
-# frontend/.env holds NON-SECRET proxy config so the app works on any
-# device/network. Secrets stay in the root .env, which is ignored.
-!frontend/.env
