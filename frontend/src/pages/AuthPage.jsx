@@ -41,10 +41,13 @@ export default function AuthPage() {
         throw new Error(errorData.detail || 'Invalid email or password')
       }
 
-      const data = await response.json().catch(() => null)
-      if (!data) {
-        throw new Error('Invalid response from server. Check VITE_API_URL.')
-      }
+        const data = await response.json().catch(() => null)
+        if (!data) {
+          const text = await response.text().catch(() => '')
+          const snippet = text.substring(0, 100).replace(/<[^>]+>/g, '').trim()
+          throw new Error(`API returned non-JSON response (${response.status}). ` +
+            `This means /api routes aren't reached. Got: "${snippet || '(empty)'}"`)
+        }
       localStorage.setItem('rcm_token', data.token)
       try {
         localStorage.setItem('rcm_user', JSON.stringify(data.user))

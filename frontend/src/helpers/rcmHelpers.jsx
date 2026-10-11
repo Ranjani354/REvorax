@@ -1,4 +1,10 @@
-export const API_BASE_URL = import.meta.env.VITE_API_URL || ''
+// In production (Render), the backend serves both frontend and API from
+// the same origin. Use relative URLs so any device can reach the API.
+// Only use an absolute URL when VITE_API_URL is explicitly set (rare).
+const isLocalDev = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+export const API_BASE_URL = (!isLocalDev && typeof import.meta.env.VITE_API_URL === 'string' && import.meta.env.VITE_API_URL.startsWith('http'))
+  ? import.meta.env.VITE_API_URL
+  : ''
 
 export const emailRule = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export const passwordRule = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/
