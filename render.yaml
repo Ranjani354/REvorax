@@ -1,18 +1,26 @@
 services:
   - type: web
-    name: revorax-1
+    name: rcm-backend
     runtime: python
     region: oregon
     plan: free
-    buildCommand: |
-      pip install -r backend/requirements.txt
-      (cd frontend && npm install && npm run build)
-      rm -rf backend/static && mkdir -p backend/static
-      cp -r frontend/dist/* backend/static/
+    buildCommand: pip install -r backend/requirements.txt
     startCommand: cd backend && python -m main
     envVars:
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_ALGORITHM
         value: HS256
-      autoDeploy: true
+    autoDeploy: true
+
+  - type: static
+    name: rcm-frontend
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    publishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://rcm-backend.onrender.com
+    autoDeploy: true
