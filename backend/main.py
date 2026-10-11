@@ -684,9 +684,29 @@ def create_reservation(payload: ReservationCreate) -> dict[str, Any]:
         conn.close()
 
 
-# The frontend is served separately by Vite (dev) or by the static host in
-# production. Do NOT add a catch-all GET route here: it would shadow the
-# /api routes and break every request from the browser.
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+
+# In production a single Render web service runs this API *and* serves the
+# built React app, so the browser can call /api on the same origin. In local
+# development Vite serves the app and proxies /api here, and this directory
+# does not exist, so nothing below is registered.
+STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
+
+if os.path.isdir(STATIC_DIR):
+    assets_dir = os.path.join(STATIC_DIR, 'assets')
+    if os.path.isdir(assets_dir):
+        app.mount('/assets', StaticFiles(directory=assets_dir), name='assets')
+
+    @app.get('/{full_path:path}', include_in_schema=False)
+    async def serve_spa(full_path: str) -> FileResponse:
+        # Registered last, so /api routes above always win. Anything that is
+        # not a real file falls through to index.html for client-side routing.
+        candidate = os.path.join(STATIC_DIR, full_path)
+        if full_path and os.path.isfile(candidate):
+            return FileResponse(candidate)
+        return FileResponse(os.path.join(STATIC_DIR, 'index.html'))
+
 
 if __name__ == '__main__':
     import uvicorn
