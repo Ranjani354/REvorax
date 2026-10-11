@@ -41,7 +41,10 @@ export default function AuthPage() {
         throw new Error(errorData.detail || 'Invalid email or password')
       }
 
-      const data = await response.json()
+      const data = await response.json().catch(() => null)
+      if (!data) {
+        throw new Error('Invalid response from server. Check VITE_API_URL.')
+      }
       localStorage.setItem('rcm_token', data.token)
       try {
         localStorage.setItem('rcm_user', JSON.stringify(data.user))
