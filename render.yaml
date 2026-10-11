@@ -4,13 +4,8 @@ services:
     runtime: python
     region: oregon
     plan: free
-    buildCommand: |
-      pip install -r backend/requirements.txt
-      (cd frontend && npm install && npm run build)
-      rm -rf backend/static && mkdir -p backend/static
-      cp -r frontend/dist/* backend/static/
-      python backend/seed.py
-    startCommand: cd backend && python -m main
+    buildCommand: bash build.sh
+    startCommand: python -m uvicorn backend.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: JWT_SECRET
         generateValue: true
