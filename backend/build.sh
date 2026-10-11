@@ -8,4 +8,3 @@ echo "==> Seeding database"
 python seed.py
 
 echo "==> Build complete"
-ls -la static
