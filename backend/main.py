@@ -10,8 +10,14 @@ from fastapi import Depends, FastAPI, HTTPException, Query, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from database import get_connection, init_db
-from schemas import ClaimCreate, DenialCreate, PaymentCreate, PaymentResponse, ReservationCreate, ReservationResponse, UserCreate, UserLogin
+try:
+    # Running as a package (uvicorn backend.main:app from the project root).
+    from backend.database import get_connection, init_db
+    from backend.schemas import ClaimCreate, DenialCreate, PaymentCreate, PaymentResponse, ReservationCreate, ReservationResponse, UserCreate, UserLogin
+except ImportError:
+    # Running from inside the backend directory (python main.py).
+    from database import get_connection, init_db
+    from schemas import ClaimCreate, DenialCreate, PaymentCreate, PaymentResponse, ReservationCreate, ReservationResponse, UserCreate, UserLogin
 
 app = FastAPI(title='RevoraX', version='1.0.0')
 app.add_middleware(
@@ -678,22 +684,13 @@ def create_reservation(payload: ReservationCreate) -> dict[str, Any]:
         conn.close()
 
 
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-
-static_dir = os.path.join(os.path.dirname(__file__), 'static')
-
-
-@app.get('/{full_path:path}')
-async def serve_frontend(full_path: str):
-    return FileResponse(os.path.join(static_dir, 'index.html'))
-
-if os.path.isdir(static_dir):
-    app.mount('/assets', StaticFiles(directory=os.path.join(static_dir, 'assets')), name='assets')
-
+# The frontend is served separately by Vite (dev) or by the static host in
+# production. Do NOT add a catch-all GET route here: it would shadow the
+# /api routes and break every request from the browser.
 
 if __name__ == '__main__':
     import uvicorn
 
     port = int(os.getenv('PORT', '8000'))
+    # host 0.0.0.0 so other devices on the network can reach the API.
     uvicorn.run('main:app', host='0.0.0.0', port=port)
