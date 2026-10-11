@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: revorax-1
+    name: revorax
     runtime: python
     region: oregon
     plan: free
