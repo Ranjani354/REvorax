@@ -1268,6 +1268,130 @@
   }
 }
 
+@media (max-width: 768px) {
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card strong {
+    font-size: clamp(1.4rem, 2vw, 1.8rem);
+  }
+
+  .claims-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .filter-button,
+  .claims-create-button {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 1.1rem;
+  }
+
+  .claims-filter-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .claims-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .claims-table {
+    min-width: 700px;
+    font-size: 0.85rem;
+  }
+
+  .claims-table th,
+  .claims-table td {
+    padding: 12px 10px;
+    white-space: nowrap;
+  }
+
+  .claim-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .claim-form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .auth-form label,
+  .reservation-form label {
+    font-size: 0.85rem;
+  }
+
+  .primary-button,
+  .filter-button {
+    padding: 14px 18px;
+    font-size: 1.1rem;
+  }
+
+  .assistant-composer {
+    padding: 8px 12px;
+  }
+
+  .assistant-composer button {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+  }
+
+  .assistant-chip-row {
+    gap: 8px;
+  }
+
+  .assistant-chip {
+    font-size: 0.85rem;
+    padding: 8px 14px;
+  }
+
+  .aging-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .aging-info {
+    text-align: center;
+  }
+
+  .bar {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-shell,
+  .reservation-page {
+    padding: 16px;
+  }
+
+  .auth-card,
+  .reservation-card {
+    padding: 20px;
+  }
+
+  .brand-badge {
+    width: 44px;
+    height: 44px;
+  }
+
+  .auth-title {
+    font-size: 1.5rem;
+  }
+
+  .claims-header-row h2 {
+    font-size: 1.8rem;
+  }
+
+  .claims-header-row p {
+    font-size: 1rem;
+  }
+}
+
 .empty-state {
   margin-top: 0.75rem;
   padding: 1.25rem;
