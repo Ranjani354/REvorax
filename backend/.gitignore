@@ -1,0 +1,8 @@
+﻿@
+__pycache__/
+*.pyc
+rcm.db
+*.db
+.env
+static/
+
