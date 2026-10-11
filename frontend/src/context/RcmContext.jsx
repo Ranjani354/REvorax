@@ -112,7 +112,7 @@ export function RcmProvider({ children }) {
   const [showFilterPanel, setShowFilterPanel] = useState(true)
   const [showViewClaim, setShowViewClaim] = useState(false)
   const [selectedClaim, setSelectedClaim] = useState(null)
-  const [loginForm, setLoginForm] = useState({ email: 'demo@example.com', password: 'Secret123!' })
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' })
   const [signupForm, setSignupForm] = useState({ name: '', phone: '', email: '', password: '', confirmPassword: '' })
   const [signupErrors, setSignupErrors] = useState({})
   const [reservationForm, setReservationForm] = useState({
